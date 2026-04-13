@@ -695,84 +695,86 @@ export default function CreateRecipe() {
 
         {/* Recipe Basic Info */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div className="px-8 py-8 border-b border-slate-200 dark:border-slate-700">
-            <div className="flex items-start justify-between gap-6 mb-6">
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
-                  {id ? "Edit Recipe" : "Create Recipe"}
-                </h2>
-                <p className="text-slate-600 dark:text-slate-400">
-                  {id ? "Update your recipe details and materials" : "Add a new recipe with materials and costing"}
-                </p>
+          {/* Professional Header with Gradient */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6 border-b border-blue-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <ChefHat className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-1">
+                    {id ? "Edit Recipe" : "Create New Recipe"}
+                  </h2>
+                  <p className="text-blue-100 text-sm">
+                    {id ? "Update recipe details and materials" : "Add materials and configure costing"}
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-2">
-                {id && (
-                  <>
-                    <button className="px-4 py-2.5 rounded-lg border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition-all">
-                      Delete
-                    </button>
-                  </>
-                )}
-              </div>
+              {id && (
+                <button 
+                  type="button"
+                  className="px-4 py-2 rounded-lg bg-red-500/20 border border-red-300/30 text-white hover:bg-red-500/30 font-medium transition-all backdrop-blur-sm"
+                >
+                  Delete Recipe
+                </button>
+              )}
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8 p-8">
-            {/* RECIPE DETAILS Section */}
-            <div className="border-l-4 border-indigo-500 pl-6">
-              <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-6">
-                Recipe Details
-              </h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* RECIPE DETAILS Section - Same as Detail Page */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-3">Recipe Details</h2>
+              
+              <div className="space-y-4">
+                {/* Recipe Name */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">
+                    Recipe Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    placeholder="Enter recipe name"
+                    className={`w-full px-4 py-2.5 rounded-lg bg-white dark:bg-slate-700 border transition-all ${
+                      errors.name
+                        ? "border-red-500 dark:border-red-400"
+                        : "border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 focus:border-blue-500"
+                    } text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium`}
+                  />
+                  {errors.name && (
+                    <p className="text-red-600 dark:text-red-400 text-xs mt-1 font-medium">
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
 
-              {/* Recipe Name */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-                  Recipe Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  placeholder="Enter recipe name"
-                  className={`w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-700 border transition-all ${
-                    errors.name
-                      ? "border-red-500 dark:border-red-400"
-                      : "border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500"
-                  } text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-medium`}
-                />
-                {errors.name && (
-                  <p className="text-red-600 dark:text-red-400 text-xs mt-2 font-medium">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-
-              {/* Recipe Type */}
-              <div>
-                <label className="block text-sm font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-                  Recipe Type <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formData.recipeType}
-                  onChange={(e) =>
-                    setFormData({ ...formData, recipeType: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all font-medium"
-                >
-                  <option value="master">Master Recipe</option>
-                  <option value="sub">Sub Recipe</option>
-                </select>
+                {/* Recipe Type */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">
+                    Recipe Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.recipeType}
+                    onChange={(e) =>
+                      setFormData({ ...formData, recipeType: e.target.value })
+                    }
+                    className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                  >
+                    <option value="master">Master Recipe</option>
+                    <option value="sub">Sub Recipe</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-
-            {/* CONFIGURATION Section */}
-            <div className="border-l-4 border-blue-500 pl-6">
-              <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-6">
-                Configuration
-              </h3>
+            {/* CONFIGURATION Section - Same as Detail Page */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-3">Configuration</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Batch Size */}
@@ -901,19 +903,15 @@ export default function CreateRecipe() {
               </div>
             </div>
 
-            {/* Recipe Items Section */}
-            <div className="border-l-4 border-blue-500 pl-6">
-              <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-6">
-                Recipe Items
-              </h3>
-
-              <div className="flex items-center justify-between mb-6">
-                <div></div>
+            {/* Recipe Items Section - Light blue/lavender background like production labour */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800/30 p-5">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recipe Items</h2>
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
                     onClick={() => setShowAddRecipeModal(!showAddRecipeModal)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium text-sm flex items-center gap-2 shadow-md"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-semibold text-sm flex items-center gap-2 shadow-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add Sub Recipe
@@ -921,7 +919,7 @@ export default function CreateRecipe() {
                   <button
                     type="button"
                     onClick={() => setShowAddItemForm(!showAddItemForm)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium text-sm flex items-center gap-2 shadow-md"
+                    className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all font-semibold text-sm flex items-center gap-2 shadow-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add RM
@@ -1293,32 +1291,44 @@ export default function CreateRecipe() {
 
               {recipeItems.length === 0 ? (
                 <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-                  <p>No items added yet. Click "Add Item" to start.</p>
+                  <p>No items added yet. Click "Add RM" to start.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700">
-                  <table className="w-full min-w-[900px]">
-                    <thead className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-900/50 sticky top-0">
+                  <table className="w-full">
+                    <thead className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-900/50">
                       <tr>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                        <th className="text-left py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
                           <span className="flex items-center gap-2">
                             <span className="inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
                             Raw Material
                           </span>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                          Qty
+                        <th className="text-left py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
+                          <span className="flex items-center gap-2">
+                            <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Qty
+                          </span>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                          Unit
+                        <th className="text-left py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
+                          <span className="flex items-center gap-2">
+                            <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Unit
+                          </span>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                          Price
+                        <th className="text-right py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
+                          <span className="flex items-center justify-end gap-2">
+                            <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+                            Unit Price
+                          </span>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                          Total
+                        <th className="text-right py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
+                          <span className="flex items-center justify-end gap-2">
+                            <span className="inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                            Total
+                          </span>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                        <th className="text-center py-2 px-4 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -1327,16 +1337,17 @@ export default function CreateRecipe() {
                       {recipeItems.map((item, index) => (
                         <tr
                           key={index}
-                          className={`transition-all group border-l-4 border-l-transparent hover:border-l-blue-500 cursor-pointer ${
-                            editingItemIndex === index
-                              ? "bg-blue-50 dark:bg-blue-900/20 border-l-blue-500"
-                              : `${index % 2 === 0 ? "hover:bg-blue-50 dark:hover:bg-slate-700/50" : "bg-slate-50 dark:bg-slate-800/50 hover:bg-blue-50 dark:hover:bg-slate-700/50"}`
-                          }`}
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors border-b border-slate-100 dark:border-slate-700/50"
                         >
-                          <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">
-                            {item.rawMaterialName} ({item.rawMaterialCode})
+                          <td className="py-2.5 px-4">
+                            <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                              {item.rawMaterialName}
+                            </p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                              {item.rawMaterialCode}
+                            </p>
                           </td>
-                          <td className="px-6 py-4 text-sm text-slate-900 dark:text-white">
+                          <td className="py-2.5 px-4">
                             {editingItemIndex === index ? (
                               <input
                                 type="number"
@@ -1351,136 +1362,112 @@ export default function CreateRecipe() {
                                   itemErrors.quantity
                                     ? "border-red-500"
                                     : "border-slate-300 dark:border-slate-600"
-                                } bg-white dark:bg-slate-700 text-slate-900 dark:text-white`}
+                                } bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-semibold text-sm`}
                               />
                             ) : (
-                              item.quantity
+                              <span className="text-slate-900 dark:text-white font-semibold text-sm">{item.quantity}</span>
                             )}
                           </td>
-                          <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
-                            {editingItemIndex === index ? (
-                              <span className="text-slate-700 dark:text-slate-300 font-medium">
-                                {item.unitName || "-"}
-                              </span>
-                            ) : (
-                              item.unitName || "-"
-                            )}
+                          <td className="py-2.5 px-4 text-slate-700 dark:text-slate-300 font-medium text-sm">
+                            {item.unitName || "-"}
                           </td>
-                          <td className="px-6 py-4 text-sm text-blue-600 dark:text-blue-400 font-semibold">
-                            {editingItemIndex === index ? (
-                              <span className="text-blue-600 dark:text-blue-400 font-semibold">
-                                ₹{item.price.toFixed(2)}
-                              </span>
-                            ) : (
-                              `₹${item.price.toFixed(2)}`
-                            )}
+                          <td className="py-2.5 px-4 text-right text-slate-900 dark:text-white font-semibold text-sm">
+                            ₹{item.price.toFixed(2)}
                           </td>
-                          <td className="px-6 py-4 text-sm font-semibold text-slate-900 dark:text-white">
+                          <td className="py-2.5 px-4 text-right font-bold text-slate-900 dark:text-white text-sm">
                             {editingItemIndex === index
                               ? `₹${(Number(editItemForm.quantity) * item.price).toFixed(2)}`
                               : `₹${item.totalPrice.toFixed(2)}`}
                           </td>
-                          <td className="px-6 py-4 text-sm space-x-2 flex">
-                            {editingItemIndex === index ? (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={handleSaveEditItem}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
-                                >
-                                  <Check className="w-4 h-4" />
-                                  Save
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleCancelEditItem}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
-                                >
-                                  <X className="w-4 h-4" />
-                                  Cancel
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={() => handleStartEditItem(index)}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
-                                >
-                                  <Edit2 className="w-4 h-4" />
-                                  Edit
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemoveItem(index)}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-800 transition-colors"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                  Remove
-                                </button>
-                              </>
-                            )}
+                          <td className="py-2.5 px-4">
+                            <div className="flex items-center justify-center gap-2">
+                              {editingItemIndex === index ? (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={handleSaveEditItem}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors text-sm font-medium"
+                                  >
+                                    <Check className="w-4 h-4" />
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={handleCancelEditItem}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-sm font-medium"
+                                  >
+                                    <X className="w-4 h-4" />
+                                    Cancel
+                                  </button>
+                                </>
+                              ) : (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleStartEditItem(index)}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors text-sm font-medium"
+                                  >
+                                    <Edit2 className="w-4 h-4" />
+                                    Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveItem(index)}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm font-medium"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                    Remove
+                                  </button>
+                                </>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
+                      {/* Total Row - Yellow highlight like preview page */}
+                      <tr className="bg-yellow-100 dark:bg-yellow-900/30 border-t-2 border-yellow-300 dark:border-yellow-700">
+                        <td className="py-2.5 px-4 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                          TOTAL
+                        </td>
+                        <td className="py-2.5 px-4 font-bold text-slate-800 dark:text-slate-200 text-sm">
+                          {recipeItems.reduce((sum, item) => sum + (item.quantity || 0), 0).toFixed(3)}
+                        </td>
+                        <td className="py-2.5 px-4 text-slate-700 dark:text-slate-300 text-sm font-semibold">
+                          {formData.unitId ? units.find(u => u._id === formData.unitId)?.name || "—" : "—"}
+                        </td>
+                        <td className="py-2.5 px-4"></td>
+                        <td className="py-2.5 px-4 text-right font-bold text-slate-900 dark:text-white text-sm">
+                          ₹{totals.totalCost.toFixed(2)}
+                        </td>
+                        <td className="py-2.5 px-4"></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               )}
 
-              {/* Totals */}
-              {id || recipeItems.length > 0 ? (
-                <div className="mt-8 pt-8 border-t-2 border-blue-200 dark:border-blue-800">
-                  {recipeItems.length === 0 && id ? (
-                    <div className="space-y-4 bg-slate-50 dark:bg-slate-700/30 rounded-lg p-4">
-                      <div className="flex justify-between items-center animate-pulse">
-                        <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-                          Total Raw Material Cost:
-                        </span>
-                        <div className="h-6 w-24 bg-slate-300 dark:bg-slate-600 rounded"></div>
-                      </div>
-                      {formData.yield && Number(formData.yield) > 0 && (
-                        <div className="flex justify-between items-center animate-pulse">
-                          <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-                            Price Per Unit (Yield: {formData.yield}):
-                          </span>
-                          <div className="h-6 w-24 bg-slate-300 dark:bg-slate-600 rounded"></div>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-gradient-to-br from-blue-50 dark:from-blue-900/20 to-blue-100/50 dark:to-blue-900/10 rounded-lg p-4 border border-blue-200 dark:border-blue-800/30">
-                        <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">
-                          Total Raw Material Cost
-                        </p>
-                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                          ₹{totals.totalCost.toFixed(2)}
-                        </p>
-                      </div>
-                      {formData.yield && Number(formData.yield) > 0 && (
-                        <div className="bg-gradient-to-br from-green-50 dark:from-green-900/20 to-green-100/50 dark:to-green-900/10 rounded-lg p-4 border border-green-200 dark:border-green-800/30">
-                          <p className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wide mb-2">
-                            Price Per Unit (Yield: {formData.yield})
-                          </p>
-                          <p className="text-2xl font-bold text-green-700 dark:text-green-300">
-                            ₹{totals.pricePerUnit.toFixed(2)}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+              {/* Price Per KG Box - Yellow like preview */}
+              {(id || recipeItems.length > 0) && formData.yield && Number(formData.yield) > 0 && recipeItems.length > 0 && (
+                <div className="mt-4 bg-gradient-to-br from-yellow-200 to-yellow-300 dark:from-yellow-600/40 dark:to-yellow-700/40 rounded-lg p-4 border-2 border-yellow-400 dark:border-yellow-600">
+                  <div className="text-center">
+                    <p className="text-xs font-bold text-yellow-900 dark:text-yellow-200 uppercase tracking-wide mb-1">
+                      Price Per KG (Yield: {formData.yield})
+                    </p>
+                    <p className="text-2xl font-black text-yellow-900 dark:text-yellow-100">
+                      ₹{totals.pricePerUnit.toFixed(2)}/kg
+                    </p>
+                  </div>
                 </div>
-              ) : null}
+              )}
             </div>
 
             {/* Form Buttons */}
-            <div className="flex gap-3 pt-6 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex gap-3 pt-4">
               <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-400 disabled:to-slate-400 text-white font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-            >
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-400 disabled:to-slate-500 text-white font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:shadow-none"
+              >
                 {loading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1496,7 +1483,7 @@ export default function CreateRecipe() {
               <button
                 type="button"
                 onClick={() => navigate("/rmc")}
-                className="px-6 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-3 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                className="px-6 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-3 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors shadow-md"
               >
                 Cancel
               </button>
